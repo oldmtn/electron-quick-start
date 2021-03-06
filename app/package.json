@@ -3,10 +3,6 @@
   "version": "1.0.0",
   "description": "A minimal Electron application",
   "main": "main.js",
-  "scripts": {
-    "start": "electron ./app",
-    "packageWin": "electron-builder --win --ia32 --config builder-config-win.js"
-  },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
     "Electron",
@@ -16,9 +12,5 @@
     "demo"
   ],
   "author": "GitHub",
-  "license": "CC0-1.0",
-  "devDependencies": {
-    "electron": "^12.0.0",
-    "electron-builder": "^22.1.0"
-  }
+  "license": "CC0-1.0"
 }
