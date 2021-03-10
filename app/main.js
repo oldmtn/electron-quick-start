@@ -5,27 +5,61 @@ const { app, BrowserWindow } = require('electron')
 const path = require('path')
 
 
-let window1;
+let wnd1 = null, wnd2 = null;
 function createWindow1() {
   // Create the browser window.
-  window1 = new BrowserWindow({
+  wnd1 = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
+      contextIsolation: false,
       preload: path.join(__dirname, 'preload.js')
     }
   })
 
   // and load the index.html of the app.
-  window1.loadFile('index.html')
+  wnd1.loadFile('index.html')
 
+  wnd1.on('closed', () => {
+    wnd1 = null;
+  });
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
 }
 
 function closeWindow1() {
-  if (window1) {
-    window1.close();
+  if (wnd1) {
+    wnd1.close();
+    wnd1 = null;
+  }
+}
+
+function createWindow2() {
+  // Create the browser window.
+  wnd2 = new BrowserWindow({
+    width: 800,
+    height: 600,
+    webPreferences: {
+      contextIsolation: false,
+      preload: path.join(__dirname, 'preload.js')
+    }
+  })
+
+  // and load the index.html of the app.
+  wnd2.loadFile('index.html')
+
+  wnd2.on('closed', () => {
+    wnd2 = null;
+  });
+
+  // Open the DevTools.
+  // mainWindow.webContents.openDevTools()
+}
+
+function closeWindow2() {
+  if (wnd2) {
+    wnd2.close();
+    wnd2 = null;
   }
 }
 
@@ -33,7 +67,6 @@ function closeWindow1() {
 //
 
 function cb(msg) {
-
   switch (msg.type) {
     case 'openWindow1': {
       createWindow1();
@@ -42,10 +75,15 @@ function cb(msg) {
       closeWindow1();
     } break;
     case 'openWindow2': {
+      createWindow2();
     } break;
     case 'closeWindow2': {
+      closeWindow2();
     } break;
     case 'quit': {
+      closeWindow1();
+      closeWindow2();
+      app.quit();
     } break;
   }
 }
